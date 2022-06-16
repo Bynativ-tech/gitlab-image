@@ -28,13 +28,16 @@ RUN apt-get install -y poppler-utils
 RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash -
 RUN apt-get install -y nodejs
 
+RUN apt-get install -y libtidy-dev
+
 # Install Redis
 RUN apt-get install -y redis-server
 
-RUN apt-get -y --no-install-recommends install php7.4-mysql php-ssh2 build-essential zlib1g-dev g++ rsync openssl ssh\
-    && apt-get clean; rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /usr/share/doc/*
+RUN apt-get -y --no-install-recommends install php7.4-mysql php-ssh2 build-essential zlib1g-dev g++ rsync openssl ssh
 
 # Install PHP extensions
+RUN docker-php-ext-configure tidy
+RUN docker-php-ext-install tidy
 RUN docker-php-ext-install pdo pdo_mysql
 RUN docker-php-ext-install mysqli && docker-php-ext-enable mysqli
 RUN docker-php-ext-configure intl
